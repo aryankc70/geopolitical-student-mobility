@@ -1,0 +1,10 @@
+shock_id,shock_name,shock_type,start_date,end_date,affected_countries,intensity_notes,source_notes
+SH001,September 11 attacks and Afghanistan War onset,war,2001-09-11,2021-08-30,Afghanistan,Major - 20-year US military engagement,Widely documented; war end via US withdrawal 2021
+SH002,Iraq War onset,war,2003-03-20,2011-12-18,Iraq,Major - large-scale invasion and occupation,Widely documented
+SH003,Post-9/11 visa/SEVIS security tightening,domestic_policy,2002-01-01,2003-12-31,All countries (esp. Middle East/South Asia),SEVIS system introduced; heightened visa scrutiny broadly,DHS/SEVIS program history
+SH004,US-China trade war escalation,diplomatic_tension,2018-07-06,2020-01-15,China,Tariff escalation; broader bilateral tension,Widely documented tariff timeline
+SH005,US-China student visa restrictions (Proclamation 10043),domestic_policy,2020-06-01,,China,Targeted restriction on certain Chinese STEM graduate students/researchers,White House proclamation text
+SH006,COVID-19 travel restrictions,domestic_policy,2020-03-01,2021-11-08,All countries,Near-total halt to new international student travel,CDC/State Dept travel restriction timeline
+SH007,Russia invasion of Ukraine,war,2022-02-24,,Russia|Ukraine,Major - ongoing war affecting both nationalities' mobility,Widely documented
+SH008,Israel-Gaza escalation,war,2023-10-07,,Israel|Palestine,Regional conflict with visa/travel ripple effects,Widely documented
+SH009,2025 visa policy tightening and OPT changes,domestic_policy,2025-01-20,,All countries,Broad restrictive shift per NAFSA institutional survey data,NAFSA 2025 survey reporting 85% of institutions citing visa policy as major obstacle
