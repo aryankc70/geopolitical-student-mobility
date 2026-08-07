@@ -1,5 +1,13 @@
 """Extract country-level enrollment by academic level from the IIE Open Doors
-'Places of Origin and Academic Level' workbook."""
+'Places of Origin and Academic Level' workbook.
+
+Note: the source spreadsheet's category labels change partway through the
+time series - years before ~2006/07 use 'Under-graduate', 'Graduate', 'Other';
+years from ~2006/07 onward split 'Other' into 'Non-Degree' and 'OPT'
+(Optional Practical Training). This script recognizes all five labels and
+combines Other + Non-Degree + OPT into a single 'enrollment_other' column
+so pre- and post-2006/07 years stay comparable.
+"""
 import openpyxl
 import pandas as pd
 
@@ -10,6 +18,15 @@ TARGET_COUNTRIES = [
     "Russia", "Ukraine", "Mexico",
     "South Korea", "Vietnam", "Brazil", "Nigeria", "Canada", "Japan",
 ]
+
+# maps every label seen in the source to one of our three canonical buckets
+LEVEL_LABEL_MAP = {
+    "Under-graduate": "enrollment_undergrad",
+    "Graduate": "enrollment_grad",
+    "Other": "enrollment_other",
+    "Non-Degree": "enrollment_other",
+    "OPT": "enrollment_other",
+}
 
 
 def load_enrollment_by_level(source_path: str) -> pd.DataFrame:
@@ -25,8 +42,8 @@ def load_enrollment_by_level(source_path: str) -> pd.DataFrame:
         if val is not None:
             current_year = val
         lvl = level_row[idx - 1]
-        if lvl in ("Under-graduate", "Graduate", "Other"):
-            col_map.append((idx, current_year, lvl))
+        if lvl in LEVEL_LABEL_MAP:
+            col_map.append((idx, current_year, LEVEL_LABEL_MAP[lvl]))
 
     records = []
     matched = set()
@@ -37,14 +54,14 @@ def load_enrollment_by_level(source_path: str) -> pd.DataFrame:
         name_clean = str(name).strip()
         if name_clean in TARGET_COUNTRIES:
             matched.add(name_clean)
-            for col_idx, year_label, level in col_map:
+            for col_idx, year_label, canonical_level in col_map:
                 val = row[col_idx - 1].value
                 if val in (None, "-", ""):
                     continue
                 records.append({
                     "country": name_clean,
                     "academic_year": year_label,
-                    "academic_level": level,
+                    "academic_level": canonical_level,
                     "enrollment": val,
                 })
 
@@ -52,10 +69,14 @@ def load_enrollment_by_level(source_path: str) -> pd.DataFrame:
     if missing:
         print(f"WARNING: not found: {missing}")
 
-    return pd.DataFrame(records)
+    df = pd.DataFrame(records)
+    # sum Other+Non-Degree+OPT together per country-year (they were split
+    # into up to 3 separate rows above, all mapped to the same canonical bucket)
+    df = df.groupby(["country", "academic_year", "academic_level"], as_index=False)["enrollment"].sum()
+    return df
 
 
 if __name__ == "__main__":
-    df = load_enrollment_by_level("/Users/aryan/Documents/geopolitical-student-mobility/data/raw/Census_Places-of-Origin-Academic-Level_OD25_Website.xlsx")
+    df = load_enrollment_by_level("data/raw/Census_Places-of-Origin-Academic-Level_OD25_Website.xlsx")
     df.to_csv("data/processed/enrollment_by_country_level.csv", index=False)
     print(df.shape)
