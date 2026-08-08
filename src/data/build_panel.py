@@ -108,7 +108,7 @@ def build_panel(data_dir: str = "data") -> pd.DataFrame:
     nafsa = load_nafsa(f"{data_dir}/processed/nafsa_economic_contribution.csv")
     cpi = load_cpi(f"{data_dir}/processed/cpi_annual.csv")
 
-    all_years = range(2000, 2025)
+    all_years = range(1999, 2025)
     shock_flags = load_shock_flags(f"{data_dir}/raw/shock_catalog.csv", TARGET_COUNTRIES, all_years)
 
     panel = shock_flags.copy()

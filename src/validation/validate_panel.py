@@ -1,7 +1,7 @@
 """Data quality validation for the geopolitical shocks / student mobility panel dataset."""
 import pandas as pd
 
-EXPECTED_YEAR_RANGE = (2000, 2024)
+EXPECTED_YEAR_RANGE = (1999, 2024)
 
 VALUE_COLUMNS = [
     "total_enrollment", "enrollment_undergrad", "enrollment_grad", "enrollment_other",
