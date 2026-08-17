@@ -18,4 +18,5 @@ plotly
 joblib
 pytest
 requests
-openpyxl
+openpyxlxgboost
+mlflow
