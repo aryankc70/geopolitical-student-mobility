@@ -1,0 +1,12 @@
+shock_id,shock_name,shock_type,treated_country,pre_trend_status,effect_estimate,p_value,significant,reliability,notes
+SH004,US-China trade war,diplomatic_tension,China,Passes,0.19,0.61,No,Good,Pre-COVID window only (2018-2019)
+SH007,Trump travel ban,domestic_policy,Iran,Passes,0.04,0.82,No,Good,Full pre-period 2010-2016
+SH016,Russia-Ukraine war,war,Ukraine,Passes cleanly,0.05,0.84,No,Good,Best-validated result in the set
+SH016,Russia-Ukraine war,war,Russia,Passes cleanly,-0.23,0.29,No,Good,Directionally negative - sanctions/travel restrictions
+SH005,Prop 10043 / COVID overlap,domestic_policy,China,Passes (marginal),-0.10,0.61,No,Moderate,Overlaps COVID - see excl.-COVID robustness check
+SH002,Iraq War,war,Iraq,Passes,0.33,0.23,No,Low,Small country base - noisy
+SH010,NSEERS,domestic_policy,"Afghanistan|Iran|Iraq",Unvalidated,0.12,0.70,No,Limited,Insufficient pre-period data (panel floor)
+SH001,Afghanistan War,war,Afghanistan,Unvalidated,0.46,0.17,No,Low,Unvalidated + unusually long 20yr post window
+SH017,Israel-Gaza escalation,war,Israel,Contaminated,-0.26,0.25,No,Low,Pre-trend violation - result not trustworthy
+SH006,COVID-19 (ITS validation),domestic_policy,All (aggregate),N/A - ITS,-0.30,0.0000,Yes,High,Used to validate ITS method itself
+SH013,Public Charge Rule (ITS),domestic_policy,All (aggregate),N/A - ITS,-0.20,0.0043,Yes,Low,Confounded with COVID - not independently interpretable

@@ -6,6 +6,8 @@ rather than a single train/test split.
 import os
 import pandas as pd
 import numpy as np
+import joblib
+import json
 import mlflow
 from xgboost import XGBRegressor
 from sklearn.metrics import mean_absolute_error
@@ -71,6 +73,24 @@ def train_and_log(features: pd.DataFrame, experiment_name: str = "student-mobili
     return result
 
 
+
+def save_model(model, feature_cols, model_dir="models"):
+    os.makedirs(model_dir, exist_ok=True)
+    joblib.dump(model, os.path.join(model_dir, "forecast_model.joblib"))
+    with open(os.path.join(model_dir, "forecast_feature_columns.json"), "w") as f:
+        json.dump(feature_cols, f)
+    print(f"Model saved to {model_dir}/")
+
 if __name__ == "__main__":
     features = pd.read_csv("data/processed/forecast_features.csv")
     train_and_log(features)
+
+    # train and persist the final model using tuned hyperparameters
+    feature_cols = ['prior_3yr_avg_growth', 'any_shock_active', 'num_shocks_active', 'cpi_annual_avg']
+    final_params = {
+        "n_estimators": 242, "max_depth": 2, "learning_rate": 0.014460553348841401,
+        "subsample": 0.8620164270101208, "colsample_bytree": 0.6722495225595034,
+    }
+    final_model = XGBRegressor(**final_params, random_state=42)
+    final_model.fit(features[feature_cols], features['target_next_yr_growth'])
+    save_model(final_model, feature_cols)
